@@ -1,5 +1,9 @@
 node_modules
 dist
+*.tsbuildinfo
+prisma/seed.js
+prisma/seed.js.map
+prisma/seed.d.ts
 .env
 .env.local
 .env.public
