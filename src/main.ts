@@ -3,9 +3,20 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:4200';
-  app.enableCors({ origin: corsOrigin.split(',').map((o) => o.trim()), credentials: true });
+  const corsOrigins = process.env.CORS_ORIGIN?.split(',')
+    ?.map((o) => o.trim().replace(/\/$/, ''))
+    ?.filter(Boolean);
+  app.enableCors({
+    origin: corsOrigins?.length ? corsOrigins : true,
+    credentials: true,
+  });
   app.setGlobalPrefix('api');
-  await app.listen(process.env.PORT ?? 3000);
+  const port = Number(process.env.PORT) || 3000;
+  await app.listen(port, '0.0.0.0');
+  console.log(`[API] Listening on 0.0.0.0:${port}`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error('[API] Bootstrap failed:', err);
+  process.exit(1);
+});
