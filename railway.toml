@@ -7,6 +7,6 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-# CMD du Dockerfile : prisma migrate deploy puis node dist/main.js
+# CMD du Dockerfile : prisma migrate deploy puis node dist/src/main.js
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
