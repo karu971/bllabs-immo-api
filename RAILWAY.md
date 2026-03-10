@@ -6,7 +6,7 @@
 2. **New Project** → **Deploy from GitHub repo**.
 3. Choisis le repo **bllabs-immo-api** (backend).
 4. **Root Directory** : `backend` (si monorepo) ou racine si dépôt dédié.
-5. Railway utilise le **Dockerfile** (défini dans `railway.toml`).
+5. **Build** (onglet **Build** du service) : choisir le builder **Dockerfile** (pas Railpack). Le fichier `railway.toml` indique déjà le Dockerfile ; si Railway propose Railpack par défaut, passer explicitement à **Dockerfile** pour que le CMD du Dockerfile (migrations + `node dist/main.js`) soit utilisé. Ne pas définir de **Custom Build Command** ni de **Start Command** : tout est dans le Dockerfile.
 
 ## 2. Ajouter PostgreSQL
 
