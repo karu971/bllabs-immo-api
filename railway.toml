@@ -1,0 +1,11 @@
+# Configuration Railway (backend)
+# https://docs.railway.app/reference/config-as-code
+
+[build]
+builder = "nixpacks"
+
+[deploy]
+# Applique les migrations puis démarre l’API
+startCommand = "npm run start:prod:migrate"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

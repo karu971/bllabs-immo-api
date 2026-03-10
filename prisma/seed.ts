@@ -4,20 +4,41 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  const demoEmail = 'gwachou';
+  // Compte démo (visitor) — compatibilité existante
   const demoPassword = process.env.E2E_SUPERADMIN_PASSWORD || '97169';
-  const hash = await bcrypt.hash(demoPassword, 10);
-
   await prisma.user.upsert({
-    where: { email: demoEmail },
-    update: { password: hash },
+    where: { email: 'gwachou' },
+    update: { password: await bcrypt.hash(demoPassword, 10) },
     create: {
-      email: demoEmail,
-      password: hash,
+      email: 'gwachou',
+      password: await bcrypt.hash(demoPassword, 10),
+      role: 'VISITOR',
     },
   });
 
-  console.log('Seed OK: user gwachou created/updated.');
+  // karu / karu971 — superadmin
+  await prisma.user.upsert({
+    where: { email: 'karu' },
+    update: { password: await bcrypt.hash('karu971', 10), role: 'SUPERADMIN' },
+    create: {
+      email: 'karu',
+      password: await bcrypt.hash('karu971', 10),
+      role: 'SUPERADMIN',
+    },
+  });
+
+  // yann / yann971 — admin
+  await prisma.user.upsert({
+    where: { email: 'yann' },
+    update: { password: await bcrypt.hash('yann971', 10), role: 'ADMIN' },
+    create: {
+      email: 'yann',
+      password: await bcrypt.hash('yann971', 10),
+      role: 'ADMIN',
+    },
+  });
+
+  console.log('Seed OK: gwachou (visitor), karu (superadmin), yann (admin).');
 }
 
 main()
