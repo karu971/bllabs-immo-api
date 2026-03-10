@@ -1,13 +1,12 @@
 # Configuration Railway (backend)
 # https://docs.railway.app/reference/config-as-code
 
+# Build : Docker (Dockerfile). Base de données : PostgreSQL (service Railway).
 [build]
-builder = "nixpacks"
-# Obligatoire : produit dist/ avant le start (sinon MODULE_NOT_FOUND /app/dist/main)
-buildCommand = "npm run build"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-# Applique les migrations puis démarre l’API
-startCommand = "npm run start:prod:migrate"
+# CMD du Dockerfile : prisma migrate deploy puis node dist/main.js
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
