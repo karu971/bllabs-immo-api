@@ -1,6 +1,8 @@
 import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 import { CurrentUser } from './current-user.decorator';
 
 export class LoginDto {
@@ -19,7 +21,14 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  async me(@CurrentUser() user: { id: string; email: string }) {
+  async me(@CurrentUser() user: { id: string }) {
     return this.auth.getMe(user.id);
+  }
+
+  @Get('users')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SUPERADMIN')
+  async users() {
+    return this.auth.listUsers();
   }
 }
