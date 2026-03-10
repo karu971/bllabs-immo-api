@@ -3,6 +3,8 @@
 
 [build]
 builder = "nixpacks"
+# Obligatoire : produit dist/ avant le start (sinon MODULE_NOT_FOUND /app/dist/main)
+buildCommand = "npm run build"
 
 [deploy]
 # Applique les migrations puis démarre l’API
